@@ -7,7 +7,8 @@ import TextField from "@mui/material/TextField";
 import Form from "react-bootstrap/Form";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { BorderAllRounded } from "@mui/icons-material";
-import nanoId
+import { nanoid } from "nanoid";
+import Swal from
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
