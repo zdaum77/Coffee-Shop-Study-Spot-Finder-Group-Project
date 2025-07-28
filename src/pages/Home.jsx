@@ -22,7 +22,7 @@ function Home() {
           <Grid size={{ sm: 12, md: 6, lg: 4 }}>
             <Card sx={{ backgroundColor: "#b89f89" }}>
               <CardMedia
-                sx={{ height: 140, }}
+                sx={{ height: 140,backgroundColor:"#8e684f" }}
                 image="/static/images/cards/contemplative-reptile.jpg"
                 title="this is coffee"
               />
@@ -35,7 +35,7 @@ function Home() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" sx={{ backgroundColor: "#795548" }}>
+                <Button size="small" sx={{ backgroundColor: "#795548", color: "#E6E0D4" }}>
                   View
                 </Button>
               </CardActions>
@@ -44,7 +44,7 @@ function Home() {
           <Grid size={{ sm: 12, md: 6, lg: 4 }}>
             <Card sx={{ backgroundColor: "#b89f89" }}>
               <CardMedia
-                sx={{ height: 140 }}
+                sx={{ height: 140,backgroundColor:"#8e684f" }}
                 image="/static/images/cards/contemplative-reptile.jpg"
                 title="this is coffee"
               />
@@ -57,7 +57,7 @@ function Home() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" sx={{ backgroundColor: "#795548" }}>
+                <Button size="small" sx={{ backgroundColor: "#795548", color: "#E6E0D4" }}>
                   View
                 </Button>
               </CardActions>
@@ -66,7 +66,7 @@ function Home() {
           <Grid size={{ sm: 12, md: 6, lg: 4 }}>
             <Card sx={{ backgroundColor: "#b89f89" }}>
               <CardMedia
-                sx={{ height: 140}}
+                sx={{ height: 140,backgroundColor:"#8e684f"}}
                 image="/static/images/cards/contemplative-reptile.jpg"
                 title="this is coffee"
               />
@@ -79,7 +79,7 @@ function Home() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" sx={{ backgroundColor: "#795548" }}>
+                <Button size="small" sx={{ backgroundColor: "#795548", color: "#E6E0D4" }}>
                   View
                 </Button>
               </CardActions>

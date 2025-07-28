@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { Link as RouterLink } from "react-router";
-import { Grid, Typography, Rating, Button, styled } from "@mui/material";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router";
+import {
+  Typography,
+  Button,
+  styled,
+  TextField,
+  Container,
+  Box,
+  Grid,
+  Rating,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { BorderAllRounded } from "@mui/icons-material";
 import { nanoid } from "nanoid";
-import Swal from
+import Swal from "sweetalert2";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -23,151 +27,141 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 function AddReviewForm() {
-  // this one here is foreach foodrating seatrating etc..
+  const navigate = useNavigate();
+
+  const [shopName, setShopName] = useState("");
+  const [address, setAddress] = useState("");
+  const [images, setImages] = useState([]);
+
+  // Ratings
   const [foodRating, setFoodRating] = useState(0);
   const [seatingRating, setSeatingRating] = useState(0);
   const [environmentRating, setEnvironmentRating] = useState(0);
   const [wifiRating, setWifiRating] = useState(0);
 
+  const handleSave = () => {
+    if (!shopName || !address) {
+      Swal.fire({
+        title: "Please enter shop name and address",
+        icon: "warning",
+      });
+      return;
+    }
+
+    const overallRating = (foodRating + seatingRating + environmentRating + wifiRating) / 4;
+
+    const newReview = {
+      id: nanoid(),
+      shopName,
+      address,
+      ratings: {
+        food: foodRating,
+        seating: seatingRating,
+        environment: environmentRating,
+        wifi: wifiRating,
+      },
+      overallRating,
+      images,
+      createdAt: Date.now(),
+    };
+
+    const existing = localStorage.getItem("reviews");
+    const reviews = existing ? JSON.parse(existing) : [];
+
+    const updatedReviews = [...reviews, newReview];
+    localStorage.setItem("reviews", JSON.stringify(updatedReviews));
+
+    Swal.fire({
+      title: "Review saved!",
+      icon: "success",
+    });
+
+    navigate("/");
+  };
+
   return (
-    <div
-      style={{
-        backgroundColor: "#FFF4EA",
-        minHeight: "100vh",
-        padding: "20px 0",
-      }}
-    >
-      <Container
-        maxWidth="md"
-        sx={{
-          py: "60px",
-        }}
-      >
+    <div style={{ backgroundColor: "#FFF4EA", minHeight: "100vh", padding: "20px 0" }}>
+      <Container maxWidth="md" sx={{ py: "60px" }}>
         <Typography variant="h3">Add New Review</Typography>
-        <Box component="form" noValidate autoComplete="off" sx={{ mt: "20px" }}>
+
+        <Box sx={{ mt: "20px" }}>
           <TextField
             fullWidth
-            id="outlined-basic"
             label="Shop Name"
             variant="outlined"
+            value={shopName}
+            onChange={(e) => setShopName(e.target.value)}
           />
         </Box>
-        <Box component="form" noValidate autoComplete="off" sx={{ mt: "20px" }}>
+        <Box sx={{ mt: "20px" }}>
           <TextField
             fullWidth
-            id="outlined-basic"
             label="Address"
             variant="outlined"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
           />
         </Box>
-        <Grid container spacing={2} sx={{ mt: 5 }}>
-          <Grid size={{ sm: 12, md: 6 }}>
-            <Box
-              style={{
-                display: "flex",
-                m: 5,
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
+
+        {/* Rating Section */}
+        <Box sx={{ mt: 4 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6} size={{ sm: 12, md: 6}} >
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                <Typography>Food</Typography>
+                <Rating value={foodRating} onChange={(e, newVal) => setFoodRating(newVal)} />
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                <Typography>Seating</Typography>
+                <Rating value={seatingRating} onChange={(e, newVal) => setSeatingRating(newVal)} />
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                <Typography>Environment</Typography>
+                <Rating value={environmentRating} onChange={(e, newVal) => setEnvironmentRating(newVal)} />
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                <Typography>Wi-Fi</Typography>
+                <Rating value={wifiRating} onChange={(e, newVal) => setWifiRating(newVal)} />
+              </Box>
+            </Grid>
+
+            {/* Upload Section */}
+            <Grid
+            size={{ sm: 12, md: 6}} 
+              item
+              xs={12}
+              md={6}
+              container
+              justifyContent="center"
+              alignItems="center"
+              sx={{ backgroundColor: "#8e684f", borderRadius: "25px", p: 3 }}
             >
-              <Typography variant="h6" sx={{ mr: 1 }}>
-                Food
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={foodRating}
-                onChange={(event, newValue) => {
-                  setFoodRating(newValue);
-                }}
-              />
-            </Box>
-            <Box
-              style={{
-                display: "flex",
-                m: 5,
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h6" sx={{ mr: 1 }}>
-                Seating
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={seatingRating}
-                onChange={(event, newValue) => {
-                  setSeatingRating(newValue);
-                }}
-              />
-            </Box>
-            <Box
-              style={{
-                display: "flex",
-                m: 5,
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h6" sx={{ mr: 1 }}>
-                Enviroment
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={environmentRating}
-                onChange={(event, newValue) => {
-                  setEnvironmentRating(newValue);
-                }}
-              />
-            </Box>
-            <Box
-              style={{
-                display: "flex",
-                m: 5,
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h6" sx={{ mr: 1 }}>
-                Wifi
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={wifiRating}
-                onChange={(event, newValue) => {
-                  setWifiRating(newValue);
-                }}
-              />
-            </Box>
-          </Grid>
-          <Grid
-          size={{ sm: 12, md: 6 }}
-            container
-            item
-            xs={12}
-            md={6}
-            justifyContent="center"
-            alignItems="center"
-            style={{ backgroundColor: "#8e684f",   borderRadius: "25px"}}
-          >
-            <Box>
               <Button
                 component="label"
-                role={undefined}
                 variant="contained"
-                tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
-                style={{ backgroundColor: "#795548" }}
+                sx={{ backgroundColor: "#795548" }}
               >
-                Upload files
+                Upload Images
                 <VisuallyHiddenInput
                   type="file"
-                  onChange={(event) => console.log(event.target.files)}
                   multiple
+                  onChange={(e) => {
+                    const fileNames = Array.from(e.target.files).map((f) => f.name);
+                    setImages(fileNames);
+                  }}
                 />
               </Button>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
+
+        {/* Save Button */}
+        <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
+          <Button variant="contained" color="primary" onClick={handleSave}>
+            Save Review
+          </Button>
+        </Box>
       </Container>
     </div>
   );

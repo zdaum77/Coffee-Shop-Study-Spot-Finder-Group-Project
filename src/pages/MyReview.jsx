@@ -3,15 +3,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
-
+import Swal from "sweetalert2";
+import { nanoid } from "nanoid";
+import { Link as RouterLink, useNavigate } from "react-router";
 function MyReview() {
-
-    // this one here is foreach foodrating seatrating etc..
+  // this one here is foreach foodrating seatrating etc..
   const [foodRating, setFoodRating] = useState(0);
   const [seatingRating, setSeatingRating] = useState(0);
   const [environmentRating, setEnvironmentRating] = useState(0);
   const [wifiRating, setWifiRating] = useState(0);
-  
+
   return (
     <div
       style={{
@@ -26,17 +27,16 @@ function MyReview() {
           <Grid size={{ sm: 12, md: 6 }}>
             <Card sx={{ backgroundColor: "#b89f89" }}>
               <CardMedia
-                sx={{ height: 140}}
+                sx={{ height: 140, backgroundColor: "#8e684f" }}
                 image="/static/images/cards/contemplative-reptile.jpg"
                 title="this is coffee"
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  Lizard
+                  Shop Name
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
+                  Content
                 </Typography>
               </CardContent>
             </Card>
