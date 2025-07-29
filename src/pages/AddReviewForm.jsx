@@ -39,15 +39,6 @@ function AddReviewForm() {
   const [environmentRating, setEnvironmentRating] = useState(0);
   const [wifiRating, setWifiRating] = useState(0);
 
-  // what does that do tho oop nvm
-  // eeee who use toaster in app.jsx qirun idk
-  // ohhhh i seee
-  // idk if don't use toaster you guys can change if you guys want
-  // wait guys the name findstudycafe why not mystudycafe? cuz personal mah (nice idea) yessir
-  // i wannna add some decoration like a moving cafe you know like those ads when watch online website
-  //i wanna shit go for it and pic some and send me ty alr 0.0
-  //
-  //
   const handleImageUpload = (e) => {
     // Convert FileList to a real array using spread op
     const files = [...e.target.files];
@@ -73,25 +64,23 @@ function AddReviewForm() {
       };
 
       reader.onerror = (error) => {
-        // Corrected: onerror (lowercase 'e')
-        console.error("Error reading file:", error); // It's good to log the actual error for debugging
+        console.error("Error reading file:", error);
         Swal.fire({
           title: "Error in uploading image",
           text: "Please try again.",
           icon: "error",
         });
-        loadedCount++; // Still increment count even on error
+        loadedCount++;
         if (loadedCount === files.length) {
           setImages((prevImages) => [...prevImages, ...loadedImageUrls]);
         }
       };
 
-      reader.readAsDataURL(file); // Corrected: readAsDataURL (uppercase 'URL')
-    }); // Corrected: Closing parenthesis for forEach moved here
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleSave = () => {
-    // Validation: Check if shopName, address, AND at least one image are provided
     if (!shopName || !address || images.length === 0) {
       Swal.fire({
         title:
@@ -115,7 +104,7 @@ function AddReviewForm() {
         wifi: wifiRating,
       },
       overallRating,
-      images, // Contains Data URLs
+      images,
       createdAt: Date.now(),
     };
 
@@ -156,6 +145,7 @@ function AddReviewForm() {
                 "& fieldset": {
                   borderColor: "#a97c57",
                   border: "2px solid #a97c57",
+                  borderRadius: "12px",
                 },
                 "&:hover fieldset": {
                   borderColor: "#8e684f",
@@ -182,6 +172,7 @@ function AddReviewForm() {
                 "& fieldset": {
                   borderColor: "#a97c57",
                   border: "2px solid #a97c57 ",
+                  borderRadius: "12px",
                 },
                 "&:hover fieldset": {
                   borderColor: "#8e684f",
@@ -200,7 +191,6 @@ function AddReviewForm() {
         {/* Rating Section */}
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={2}>
-            {/* Corrected Grid item sizes */}
             <Grid item xs={12} sm={6} size={{ sm: 12, md: 6 }}>
               <Box
                 sx={{
@@ -277,7 +267,6 @@ function AddReviewForm() {
             </Grid>
 
             {/* Upload Section */}
-            {/* Corrected Grid item sizes */}
             <Grid
               size={{ sm: 12, md: 6 }}
               item
@@ -301,8 +290,8 @@ function AddReviewForm() {
                 <VisuallyHiddenInput
                   type="file"
                   multiple
-                  onChange={handleImageUpload} // Correctly linked to the new handler
-                  onClick={(e) => (e.target.value = null)} // Added for re-selecting same files
+                  onChange={handleImageUpload}
+                  onClick={(e) => (e.target.value = null)}
                 />
               </Button>
               {images.length > 0 && (
@@ -328,9 +317,9 @@ function AddReviewForm() {
             variant="contained"
             onClick={handleSave}
             sx={{
-              backgroundColor: "#5D4037", // Corrected button color
+              backgroundColor: "#5D4037",
               "&:hover": {
-                backgroundColor: "#4E342E", // Corrected hover color
+                backgroundColor: "#4E342E",
               },
               color: "white",
             }}

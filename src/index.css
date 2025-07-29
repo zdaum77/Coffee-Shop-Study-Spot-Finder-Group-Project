@@ -6,3 +6,7 @@ body {
 html{
     background-color: "#FFF4EA" ;
 }
+
+.backgroundGradient {
+  background: linear-gradient(rgba(184, 159, 137, 1), rgb(163, 138, 117))
+}

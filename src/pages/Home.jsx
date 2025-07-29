@@ -26,7 +26,7 @@ function Home() {
       }}
     >
       <Container sx={{ py: 10 }}>
-        <Typography variant="h3">Places You Visit</Typography>
+        <Typography variant="h2" sx={{ color: "#534134ff", fontWeight:"600"}}>Places You <i>Visited...</i></Typography>
         <Grid container spacing={2} sx={{ mt: 5 }}>
           {reviews.length === 0 ? (
             <Typography variant="h6" sx={{ mt: 4 }}>
@@ -35,9 +35,23 @@ function Home() {
           ) : (
             reviews.map((review) => (
               <Grid size={{ sm: 12, md: 6, lg: 4 }}>
-                <Card sx={{ backgroundColor: "#b89f89" }}>
+                <Card
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(rgba(184, 159, 137, 1), rgb(163, 138, 117))",
+                  }}
+                  sx={{
+                    p: "5px",
+                    borderRadius: "10px",
+                  }}
+                >
                   <CardMedia
-                    sx={{ height: 140, backgroundColor: "#8e684f" }}
+                    sx={{
+                      height: 200,
+                      backgroundColor: "#8e684f",
+                      borderTopLeftRadius: "10px",
+                      borderTopRightRadius: "10px",
+                    }}
                     image={review.images?.length ? review.images[0] : ""}
                     title={review.shopName}
                   />
@@ -47,23 +61,27 @@ function Home() {
                       gutterBottom
                       variant="h5"
                       component="div"
-                      sx={{ fontWeight: " bold" }}
+                      sx={{ fontWeight: " bold", color: "#4c382bff" }}
                     >
                       {review.shopName}
                     </Typography>
                     <Typography
-                      variant="body2"
+                      variant="body1"
                       sx={{ color: "text.secondary" }}
                     >
-                      Address: {review.address}
+                      <b> Address: {review.address}</b>
                       <br />
-                      Overall Rating: {review.overallRating.toFixed(1)} ⭐
+                      <i>Overall Rating: {review.overallRating.toFixed(1)} </i>
+                      ⭐
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button
                       size="small"
-                      sx={{ backgroundColor: "#795548", color: "#E6E0D4" }}
+                      sx={{
+                        backgroundColor: "#795548",
+                        color: "#E6E0D4",
+                      }}
                       component={RouterLink}
                       to={`/review/${review.id}`}
                     >
