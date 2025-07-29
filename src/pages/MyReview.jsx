@@ -1,17 +1,34 @@
-import { Grid, Container, Typography, Rating, Box } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import { useState } from "react";
-import Swal from "sweetalert2";
-import { nanoid } from "nanoid";
-import { Link as RouterLink, useNavigate } from "react-router";
+import { useParams } from "react-router";
+import {
+  Grid,
+  Container,
+  Typography,
+  Rating,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+} from "@mui/material";
+
 function MyReview() {
-  // this one here is foreach foodrating seatrating etc..
-  const [foodRating, setFoodRating] = useState(0);
-  const [seatingRating, setSeatingRating] = useState(0);
-  const [environmentRating, setEnvironmentRating] = useState(0);
-  const [wifiRating, setWifiRating] = useState(0);
+  const { id } = useParams();
+
+  const review = (() => {
+    const stored = localStorage.getItem("reviews");
+    const reviews = stored ? JSON.parse(stored) : [];
+    return reviews.find((r) => r.id === id);
+  })();
+
+  if (!review) {
+    return (
+      <Container sx={{ py: 10 }}>
+        <Typography variant="h5">Review not found.</Typography>
+      </Container>
+    );
+  }
+
+  const { shopName, address, ratings, images } = review;
 
   return (
     <div
@@ -21,107 +38,99 @@ function MyReview() {
         padding: "20px 0",
       }}
     >
-      <Container sx={{ py: 10 }}>
-        <Typography variant="h3">The Review</Typography>
-        <Grid container spacing={2} sx={{ mt: 5 }}>
-          <Grid size={{ sm: 12, md: 6 }}>
-            <Card sx={{ backgroundColor: "#b89f89" }}>
-              <CardMedia
-                sx={{ height: 140, backgroundColor: "#8e684f" }}
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="this is coffee"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Shop Name
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Content
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container spacing={2} sx={{ mt: 5 }}>
-            <Grid size={{ sm: 12, md: 6 }}>
+      <Container maxWidth="md" sx={{ py: 8 }}>
+        <Typography variant="h3" gutterBottom>
+          The Review
+        </Typography>
+
+        <Card sx={{ backgroundColor: "#b89f89", mb: 4 }}>
+          <CardMedia
+            component="img"
+            height="300"
+            image={images?.[0] || ""}
+            alt={shopName}
+            sx={{
+              objectFit: "cover",
+              width: "100%",
+            }}
+          />
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              {shopName}
+            </Typography>
+            <Typography variant="body1">Address: {address}</Typography>
+          </CardContent>
+        </Card>
+
+        <Box sx={{ backgroundColor: "#f3e5dc", borderRadius: 2, p: 3, mb: 4 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
               <Box
-                style={{
-                  display: "flex",
-                  m: 5,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Typography variant="h6" sx={{ mr: 1 }}>
-                  Food
-                </Typography>
-                <Rating
-                  name="simple-controlled"
-                  value={foodRating}
-                  onChange={(event, newValue) => {
-                    setFoodRating(newValue);
-                  }}
-                />
+                <Typography variant="h6">Food</Typography>
+                <Rating value={ratings?.food ?? 0} readOnly />
               </Box>
+            </Grid>
+            <Grid item xs={6}>
               <Box
-                style={{
-                  display: "flex",
-                  m: 5,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Typography variant="h6" sx={{ mr: 1 }}>
-                  Seating
-                </Typography>
-                <Rating
-                  name="simple-controlled"
-                  value={seatingRating}
-                  onChange={(event, newValue) => {
-                    setSeatingRating(newValue);
-                  }}
-                />
+                <Typography variant="h6">Seating</Typography>
+                <Rating value={ratings?.seating ?? 0} readOnly />
               </Box>
+            </Grid>
+            <Grid item xs={6}>
               <Box
-                style={{
-                  display: "flex",
-                  m: 5,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Typography variant="h6" sx={{ mr: 1 }}>
-                  Enviroment
-                </Typography>
-                <Rating
-                  name="simple-controlled"
-                  value={environmentRating}
-                  onChange={(event, newValue) => {
-                    setEnvironmentRating(newValue);
-                  }}
-                />
+                <Typography variant="h6">Environment</Typography>
+                <Rating value={ratings?.environment ?? 0} readOnly />
               </Box>
+            </Grid>
+            <Grid item xs={6}>
               <Box
-                style={{
-                  display: "flex",
-                  m: 5,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Typography variant="h6" sx={{ mr: 1 }}>
-                  Wifi
-                </Typography>
-                <Rating
-                  name="simple-controlled"
-                  value={wifiRating}
-                  onChange={(event, newValue) => {
-                    setWifiRating(newValue);
-                  }}
-                />
+                <Typography variant="h6">Wi-Fi</Typography>
+                <Rating value={ratings?.wifi ?? 0} readOnly />
               </Box>
             </Grid>
           </Grid>
-        </Grid>
+        </Box>
+
+        <Box display="flex" gap={2}>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ backgroundColor: "#795548", color: "#E6E0D4" }}
+          >
+            Edit
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ backgroundColor: "#795548", color: "#E6E0D4" }}
+          >
+            Delete
+          </Button>
+           <Button
+            size="small"
+            variant="contained"
+            sx={{ backgroundColor: "#795548", color: "#E6E0D4"
+             }}
+          >
+            Back
+          </Button>
+        </Box>
       </Container>
     </div>
   );

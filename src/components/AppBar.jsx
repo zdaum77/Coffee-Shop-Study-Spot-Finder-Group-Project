@@ -21,10 +21,6 @@ const pages = [
     label: "Add Review",
     url: "/add",
   },
-  {
-    label: "My Review",
-    url: "/review",
-  },
 ];
 
 function ResponsiveAppBar() {
@@ -49,8 +45,8 @@ function ResponsiveAppBar() {
             <Typography
               variant="h6"
               noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
+              component={RouterLink}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -61,7 +57,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              Coffee Shop Study Spot Finder
+              MyStudyCafe
             </Typography>
           </Box>
 
@@ -119,8 +115,8 @@ function ResponsiveAppBar() {
             <Typography
               variant="h5"
               noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
+              component={RouterLink}
+              to="/"
               sx={{
                 mr: 2,
                 display: "flex",
@@ -131,7 +127,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              Coffee Shop Study Spot Finder
+              MyStudyCafe
             </Typography>
           </Box>
 

@@ -10,130 +10,10 @@ import {
   Grid,
   Rating,
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { nanoid } from "nanoid";
-import Swal from "sweetalert2";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+function EditReviewPage() {
 
-function AddReviewForm() {
-  const navigate = useNavigate();
-
-  const [shopName, setShopName] = useState("");
-  const [address, setAddress] = useState("");
-  const [images, setImages] = useState([]);
-
-  // Ratings
-  const [foodRating, setFoodRating] = useState(0);
-  const [seatingRating, setSeatingRating] = useState(0);
-  const [environmentRating, setEnvironmentRating] = useState(0);
-  const [wifiRating, setWifiRating] = useState(0);
-
-  // what does that do tho oop nvm
-  // eeee who use toaster in app.jsx qirun idk
-  // ohhhh i seee
-  // idk if don't use toaster you guys can change if you guys want
-  // wait guys the name findstudycafe why not mystudycafe? cuz personal mah (nice idea) yessir
-  // i wannna add some decoration like a moving cafe you know like those ads when watch online website
-  //i wanna shit go for it and pic some and send me ty alr 0.0
-  //
-  //
-  const handleImageUpload = (e) => {
-    // Convert FileList to a real array using spread op
-    const files = [...e.target.files];
-
-    if (files.length === 0) {
-      setImages([]); // clear da images if no files selected
-      return;
-    }
-
-    const loadedImageUrls = [];
-    let loadedCount = 0;
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        loadedImageUrls.push(event.target.result);
-        loadedCount++;
-        // Once all files are loaded, update the state
-        if (loadedCount === files.length) {
-          setImages((prevImages) => [...prevImages, ...loadedImageUrls]);
-        }
-      };
-
-      reader.onerror = (error) => {
-        // Corrected: onerror (lowercase 'e')
-        console.error("Error reading file:", error); // It's good to log the actual error for debugging
-        Swal.fire({
-          title: "Error in uploading image",
-          text: "Please try again.",
-          icon: "error",
-        });
-        loadedCount++; // Still increment count even on error
-        if (loadedCount === files.length) {
-          setImages((prevImages) => [...prevImages, ...loadedImageUrls]);
-        }
-      };
-
-      reader.readAsDataURL(file); // Corrected: readAsDataURL (uppercase 'URL')
-    }); // Corrected: Closing parenthesis for forEach moved here
-  };
-
-  const handleSave = () => {
-    // Validation: Check if shopName, address, AND at least one image are provided
-    if (!shopName || !address || images.length === 0) {
-      Swal.fire({
-        title:
-          "Please fill in the shop name, address, and upload at least one image.",
-        icon: "warning",
-      });
-      return;
-    }
-
-    const overallRating =
-      (foodRating + seatingRating + environmentRating + wifiRating) / 4;
-
-    const newReview = {
-      id: nanoid(),
-      shopName,
-      address,
-      ratings: {
-        food: foodRating,
-        seating: seatingRating,
-        environment: environmentRating,
-        wifi: wifiRating,
-      },
-      overallRating,
-      images, // Contains Data URLs
-      createdAt: Date.now(),
-    };
-
-    const existingReviews = localStorage.getItem("reviews");
-    const reviews = existingReviews ? JSON.parse(existingReviews) : [];
-
-    const updatedReviews = [...reviews, newReview];
-    localStorage.setItem("reviews", JSON.stringify(updatedReviews));
-
-    Swal.fire({
-      title: "Review Added",
-      icon: "success",
-    });
-
-    navigate("/");
-  };
-
-  return (
+ return(
     <div
       style={{
         backgroundColor: "#FFF4EA",
@@ -340,7 +220,8 @@ function AddReviewForm() {
         </Box>
       </Container>
     </div>
-  );
+    
+ )
 }
 
-export default AddReviewForm;
+export default EditReviewPage;
