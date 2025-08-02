@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link as RouterLink } from "react-router";
 import {
   Container,
@@ -9,13 +9,28 @@ import {
   CardContent,
   CardMedia,
   Button,
+  TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
 function Home() {
   const [reviews] = useState(() => {
     const stored = localStorage.getItem("reviews");
     return stored ? JSON.parse(stored) : [];
   });
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return reviews;
+    const q = search.toLowerCase();
+    return reviews.filter(
+      (r) =>
+        (r.shopName || "").toLowerCase().includes(q) ||
+        (r.address || "").toLowerCase().includes(q)
+    );
+  }, [search, reviews]);
 
   return (
     <div
@@ -26,15 +41,51 @@ function Home() {
       }}
     >
       <Container sx={{ py: 10 }}>
-        <Typography variant="h2" sx={{ color: "#534134ff", fontWeight:"600"}}>Places You <i>Visited...</i></Typography>
-        <Grid container spacing={2} sx={{ mt: 5 }}>
-          {reviews.length === 0 ? (
+        <Typography
+          variant="h2"
+          sx={{ color: "#534134ff", fontWeight: "600", mb: 2 }}
+        >
+          Places You <i>Visited...</i>
+        </Typography>
+
+        <TextField
+          fullWidth
+          placeholder="Search by shop name or address"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ mb: 4, maxWidth: 600 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {search && (
+                  <IconButton
+                    aria-label="clear"
+                    size="small"
+                    onClick={() => setSearch("")}
+                  >
+                    <ClearIcon fontSize="small" />
+                  </IconButton>
+                )}
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          {filtered.length === 0 ? (
             <Typography variant="h6" sx={{ mt: 4 }}>
-              No reviews yet.
+              No reviews found.
             </Typography>
           ) : (
-            reviews.map((review) => (
-              <Grid size={{ sm: 12, md: 6, lg: 4 }}>
+            filtered.map((review) => (
+              <Grid
+                item
+                key={review.id}
+                xs={12}
+                sm={12}
+                md={6}
+                lg={4}
+              >
                 <Card
                   style={{
                     backgroundImage:
