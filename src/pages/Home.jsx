@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link as RouterLink } from "react-router";
 import {
   Container,
@@ -22,15 +22,14 @@ function Home() {
   });
   const [search, setSearch] = useState("");
 
-  const filtered = useMemo(() => {
-    if (!search.trim()) return reviews;
-    const q = search.toLowerCase();
-    return reviews.filter(
-      (r) =>
-        (r.shopName || "").toLowerCase().includes(q) ||
-        (r.address || "").toLowerCase().includes(q)
-    );
-  }, [search, reviews]);
+  // ✅ do filtering here directly, no useMemo
+  const filtered = search.trim()
+    ? reviews.filter(
+        (r) =>
+          (r.shopName || "").toLowerCase().includes(search.toLowerCase()) ||
+          (r.address || "").toLowerCase().includes(search.toLowerCase())
+      )
+    : reviews;
 
   return (
     <div
