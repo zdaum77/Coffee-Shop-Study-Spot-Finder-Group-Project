@@ -78,14 +78,7 @@ function Home() {
             </Typography>
           ) : (
             filtered.map((review) => (
-              <Grid
-                item
-                key={review.id}
-                xs={12}
-                sm={12}
-                md={6}
-                lg={4}
-              >
+              <Grid item key={review.id} xs={12} sm={12} md={6} lg={4}>
                 <Card
                   style={{
                     backgroundImage:
@@ -99,6 +92,7 @@ function Home() {
                   <CardMedia
                     sx={{
                       height: 200,
+                      width: 360,
                       backgroundColor: "#8e684f",
                       borderTopLeftRadius: "10px",
                       borderTopRightRadius: "10px",
